@@ -1,0 +1,12 @@
+Admin
+
+select name,password from t_admin where name='xym123' and password='123456'
+insert into t_admin values ('A35','xym123','xym19970521')
+update t_admin set password='123456' where id='A35'
+
+
+Banner
+select id,title,imgPath,`desc`,`status`,createDate from t_banner
+update t_banner set `status`='2' where id='F06'
+insert into t_banner values ('F07','','','',1,NOW())
+delete from t_banner where id='F06'

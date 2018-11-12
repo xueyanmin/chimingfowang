@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.UserDAO">
+    <insert parameterType="com.baizhi.entity.User" id="insert">
+      insert into t_user values (#{id},#{phoneNum},#{username},#{password},#{salt},#{province},#{city},#{nickName},#{sex},#{sign},#{headPicPath},#{status},#{createDate})
+    </insert>
+
+    <update id="update">
+      update t_user
+      set phoneNum=#{phoneNum},username=#{username},password=#{password},
+      salt=#{salt},province=#{province},city=#{city},nickName=#{nickName},
+      sex=#{sex},sign=#{sign},headPicPath=#{headPicPath},status=#{status},createDate=#{createDate}
+      where id=#{id}
+    </update>
+
+    <update id="updateStart">
+      update t_user
+      set phoneNum=#{phoneNum},username=#{username},password=#{password},
+      salt=#{salt},province=#{province},city=#{city},nickName=#{nickName},
+      sex=#{sex},sign=#{sign},headPicPath=#{headPicPath},status=#{status},createDate=#{createDate}
+      where id=#{id} and status=#{status}
+    </update>
+
+    <delete id="delete">
+       delete from t_user where id=#{id}
+    </delete>
+
+    <select id="queryAll" resultType="com.baizhi.entity.User">
+     select id,phoneNum,username,password,salt,province,
+     city,nickName,sex,sign,headPicPath,status,createDate
+     from t_user
+    </select>
+
+    <select id="queryOne" resultType="com.baizhi.entity.User">
+      select id,phoneNum,username,password,salt,province,
+      city,nickName,sex,sign,headPicPath,status,createDate
+      from t_user
+      where id=#{id}
+    </select>
+
+    <select id="queryByUsernamePassword" resultType="com.baizhi.entity.User">
+      select id,phoneNum,username,password,salt,province,
+      city,nickName,sex,sign,headPicPath,status,createDate
+      from t_user
+      where username=#{username} and password=#{password}
+    </select>
+
+    <select id="queryByPage" resultType="com.baizhi.entity.User">
+       select id,phoneNum,username,password,salt,province,
+       city,nickName,sex,sign,headPicPath,status,createDate
+       from t_user
+       limit #{start},#{rows}
+    </select>
+
+    <select id="queryTotals" resultType="long">
+       select count(id) from t_user
+    </select>
+
+</mapper>

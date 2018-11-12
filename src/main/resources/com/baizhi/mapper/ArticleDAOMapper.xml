@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ArticleDAO">
+
+    <resultMap id="article" type="com.baizhi.entity.Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="imgPath" column="imgPath"/>
+        <result property="content" column="content"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="link" column="link"/>
+        <result property="illuStration" column="illuStration"/>
+        <association property="guruId" javaType="com.baizhi.entity.Guru">
+            <id property="id" column="guruId"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <insert parameterType="com.baizhi.entity.Article" id="insert">
+      insert into t_article values (#{id},#{title},#{imgPath},#{content},#{pulishDate},#{link},#{illuStration})
+    </insert>
+
+    <update id="update">
+      update t_article set `title`=#{title},imgPath=#{imgPath},`content`=#{content},publishDate=#{publishDate},link=#{link},illuStration=#{illuStration} where id=#{id}
+    </update>
+
+    <delete id="delete">
+       delete from t_article where id=#{id}
+    </delete>
+
+    <select id="queryAll" resultMap="article">
+     SELECT id,title,imgPath,content,publishDate,link,illuStration from t_article
+    </select>
+
+    <select id="queryOne" resultMap="article">
+      SELECT art.id,art.title,art.imgPath,
+				art.content,art.publishDate,art.link,
+				art.illuStration,guru.id as guruId,guru.`name`
+                from t_article art
+                join t_guru guru
+                on art.guru_id=guru.id
+                where art.id=#{id}
+    </select>
+
+    <select id="queryByPage" resultMap="article">
+       SELECT art.id,art.title,art.imgPath,
+				art.content,art.publishDate,art.link,
+				art.illuStration,guru.id as guruId,guru.`name`
+                from t_article art
+                join t_guru guru
+                on art.guru_id=guru.id limit #{start},#{rows}
+    </select>
+
+    <select id="queryTotals" resultType="long">
+       select count(id) from t_article
+    </select>
+
+</mapper>

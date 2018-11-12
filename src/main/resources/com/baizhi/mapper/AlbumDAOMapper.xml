@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.AlbumDAO">
+    <resultMap id="and" type="com.baizhi.entity.Album">
+
+        <id property="id" column="aid"/>
+        <result property="title" column="atitle"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="count" column="count"/>
+        <result property="coverImg" column="coverImg"/>
+        <result property="star" column="star"/>
+        <result property="author" column="author"/>
+        <result property="broadCast" column="broadCast"/>
+        <result property="brief" column="brief"/>
+        <collection property="children" ofType="com.baizhi.entity.Chapter">
+            <id property="id" column="cid"/>
+            <result property="title" column="ctitle"/>
+            <result property="size" column="size"/>
+            <result property="downPath" column="downPath"/>
+            <result property="duration" column="duration"/>
+            <result property="uploadDate" column="uploadDate"/>
+        </collection>
+    </resultMap>
+
+    <insert parameterType="com.baizhi.entity.Album" id="insert">
+      insert into t_album values (#{id},#{title},#{publishDate},#{count},#{coverImg},#{star},#{author},#{broadCast},#{brief})
+    </insert>
+
+    <update id="update">
+      update t_album set `title`=#{title},publishDate=#{publishDate},`count`=#{count},coverImg=#{coverImg},star=#{star},author=#{author},broadCast=#{broadCast},brief=#{brief} where id=#{id}
+    </update>
+
+    <delete id="delete">
+       delete from t_album where id=#{id}
+    </delete>
+
+    <select id="queryAll" resultType="com.baizhi.entity.Album">
+     SELECT id,title,publishDate,`count`,coverImg,star,author,broadCast,brief from t_album
+    </select>
+
+    <select id="queryOne" resultType="com.baizhi.entity.Album">
+     SELECT id,title,publishDate,`count`,coverImg,star,author,broadCast,brief from t_album where id=#{id}
+    </select>
+
+    <select id="queryByPage" resultType="com.baizhi.entity.Album">
+       SELECT id,title,publishDate,`count`,coverImg,star,author,broadCast,brief from t_album limit #{start},#{rows}
+    </select>
+
+    <select id="queryTotals" resultType="long">
+       select count(id) from t_album
+    </select>
+
+    <select id="queryAnd" resultMap="and" >
+        SELECT alb.id aid,alb.title atitle,alb.publishDate,alb.count,alb.coverImg,alb.star,alb.author,alb.broadCast,alb.brief,cha.id cid,cha.title ctitle,cha.size,cha.downPath,cha.duration,cha.uploadDate
+                from t_album alb
+                join t_chapter cha
+                on alb.id=cha.parsetId
+    </select>
+</mapper>
